@@ -1,18 +1,14 @@
 <template>
-  <section class="bookcase">
-    <header class="header">
-      <div class="item left">我的书架</div>
-      <div class="item right">
-        <router-link to="/search">搜索</router-link>
-      </div>
-    </header>
+  <section class="selection">
+    <header class="header">头</header>
     <section class="content">
-      我的书架
+      精选
     </section>
     <v-footer></v-footer>
   </section>
 </template>
 <script>
+// 组件
 import Footer from '../components/footer'
 export default {
   components: {
@@ -21,7 +17,7 @@ export default {
 }
 </script>
 <style lang="stylus" scoped>
-.bookcase{
+.selection{
   display:-webkit-box
   -webkit-box-orient:vertical
   height:100%
@@ -29,24 +25,6 @@ export default {
     display: -webkit-box
     height :4rem
     line-height :4rem
-    display: -webkit-flex /* Safari */
-    display: flex
-    flex-direction: row
-    background-color :#dd2c00
-    .item{
-      flex-grow: 1
-      color :#fff
-      a{
-        color :#fff
-      }
-    }
-    .left{
-      padding-left :10px
-    }
-    .right{
-      text-align :right
-      padding-right :10px
-    }
   }
   .header *{
     display :block
@@ -62,4 +40,3 @@ export default {
   }
 }
 </style>
-

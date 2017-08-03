@@ -8,6 +8,8 @@ import MuseUI from 'muse-ui'
 import 'muse-ui/dist/muse-ui.css'
 Vue.use(MuseUI)
 
+import '../static/css/reset.css'
+
 Vue.config.productionTip = false
 
 /* eslint-disable no-new */
