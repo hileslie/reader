@@ -38,10 +38,11 @@
             <p>名字</p>
             <p>123本</p>
           </li>
-          <li class="item">
-            <p>名字</p>
-            <p>123本</p>
-          </li>
+        </ul>
+      </div>
+      <div class="female">
+        <h2 class="title">女生</h2>
+        <ul class="box">
           <li class="item">
             <p>名字</p>
             <p>123本</p>
@@ -72,8 +73,39 @@
           </li>
         </ul>
       </div>
-      <div class="female"></div>
-      <div class="press"></div>
+      <div class="press">
+        <h2 class="title">出版社</h2>
+        <ul class="box">
+          <li class="item">
+            <p>名字</p>
+            <p>123本</p>
+          </li>
+          <li class="item">
+            <p>名字</p>
+            <p>123本</p>
+          </li>
+          <li class="item">
+            <p>名字</p>
+            <p>123本</p>
+          </li>
+          <li class="item">
+            <p>名字</p>
+            <p>123本</p>
+          </li>
+          <li class="item">
+            <p>名字</p>
+            <p>123本</p>
+          </li>
+          <li class="item">
+            <p>名字</p>
+            <p>123本</p>
+          </li>
+          <li class="item">
+            <p>名字</p>
+            <p>123本</p>
+          </li>
+        </ul>
+      </div>
     </section>
     <v-footer></v-footer>
   </section>
@@ -99,7 +131,7 @@ export default {
     display: -webkit-flex /* Safari */
     display: flex
     flex-direction: row
-    background-color :#dd2c00
+    background-color :#bf360c
     .item{
       flex-grow: 1
       color :#fff
@@ -125,24 +157,32 @@ export default {
     flex:1
     overflow:auto
     -webkit-overflow-scrolling:touch
-    .male{
+    .male, .female, .press{
       .title{
-        height :3rem
-        line-height :3rem
+        height :4rem
+        line-height :4rem
         padding-left :10px
       }
       .box{
-        r_flex()
-        flex-direction: row
-        flex-wrap: wrap
-        -webkit-box-direction: normal;
-        -webkit-box-orient: horizontal;
-        -moz-flex-direction: row;
-        -webkit-flex-direction: row;
-        flex-direction: row;
-      }
-      .item{
-        flex-grow: 2
+        font-size :0
+        .item{
+          display :inline-block
+          box-sizing: border-box
+          width :33.3%
+          text-align :center
+          padding :10px 0
+          font-size :1.2rem
+        }
+        .item:nth-child(1), .item:nth-child(2), .item:nth-child(3){
+          border-top :1px solid #ddd
+        }
+        .item:nth-child(3n+1), .item:nth-child(3n+2){
+          border-bottom :1px solid #ddd
+          border-right :1px solid #ddd
+        }
+        .item:nth-child(3n+3){
+          border-bottom :1px solid #ddd
+        }
       }
     }
   }

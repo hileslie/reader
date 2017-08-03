@@ -7,7 +7,7 @@
       </div>
     </header>
     <section class="content">
-      我的书架
+      <p>我的书架</p>
     </section>
     <v-footer></v-footer>
   </section>
@@ -32,7 +32,7 @@ export default {
     display: -webkit-flex /* Safari */
     display: flex
     flex-direction: row
-    background-color :#dd2c00
+    background-color :#bf360c
     .item{
       flex-grow: 1
       color :#fff
@@ -58,7 +58,6 @@ export default {
     flex:1
     overflow:auto
     -webkit-overflow-scrolling:touch
-    background-color:#ccc
   }
 }
 </style>
