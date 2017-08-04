@@ -10,33 +10,11 @@
       <div class="male">
         <h2 class="title">男生</h2>
         <ul class="box">
-          <li class="item">
-            <p>名字</p>
-            <p>123本</p>
-          </li>
-          <li class="item">
-            <p>名字</p>
-            <p>123本</p>
-          </li>
-          <li class="item">
-            <p>名字</p>
-            <p>123本</p>
-          </li>
-          <li class="item">
-            <p>名字</p>
-            <p>123本</p>
-          </li>
-          <li class="item">
-            <p>名字</p>
-            <p>123本</p>
-          </li>
-          <li class="item">
-            <p>名字</p>
-            <p>123本</p>
-          </li>
-          <li class="item">
-            <p>名字</p>
-            <p>123本</p>
+          <li class="item" v-for="(x, index) in maleBookList" :key="index">
+            <router-link to="/book-list">
+              <p>{{x.name}}{{index}}</p>
+              <p>{{x.num}}本</p>
+            </router-link>
           </li>
         </ul>
       </div>
@@ -113,13 +91,46 @@
 <script>
 import Footer from '../components/footer'
 export default {
+  data () {
+    return {
+      maleBookList: [
+        {
+          name: '男',
+          num: 1
+        },
+        {
+          name: '男',
+          num: 1
+        },
+        {
+          name: '男',
+          num: 1
+        },
+        {
+          name: '男',
+          num: 1
+        },
+        {
+          name: '男',
+          num: 1
+        },
+        {
+          name: '男',
+          num: 1
+        },
+        {
+          name: '男',
+          num: 1
+        }
+      ]
+    }
+  },
   components: {
     'v-footer': Footer
   }
 }
 </script>
 <style lang="stylus" scoped>
-@import '../assets/stylus/mixin.styl'
 .classify{
   display:-webkit-box
   -webkit-box-orient:vertical

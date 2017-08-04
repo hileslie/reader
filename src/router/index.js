@@ -9,6 +9,8 @@ import Ranking from '../pages/ranking'
 
 import Search from '../pages/search'
 
+import Booklist from '../pages/book-list'
+
 Vue.use(Router)
 
 export default new Router({
@@ -37,10 +39,15 @@ export default new Router({
       name: 'Ranking',
       component: Ranking
     },
-    {
+    { // 搜索
       path: '/search',
       name: 'Search',
       component: Search
+    },
+    { // 书列表
+      path: '/book-list',
+      name: 'Booklist',
+      component: Booklist
     }
   ]
 })

@@ -1,6 +1,15 @@
 <template>
   <section class="selection">
-    <header class="header">头</header>
+    <header class="header">
+      <div class="item left">精选</div>
+      <div class="item center">
+        <button class="left-btn" :class="{'active-btn': isActiveBtn}" @click="isActiveBtn=true">男生</button>
+        <button class="right-btn" :class="{'active-btn': !isActiveBtn}" @click="isActiveBtn=false">女生</button>
+      </div>
+      <div class="item right">
+        <router-link to="/search">搜索</router-link>
+      </div>
+    </header>
     <section class="content">
       精选
     </section>
@@ -11,6 +20,11 @@
 // 组件
 import Footer from '../components/footer'
 export default {
+  data () {
+    return {
+      isActiveBtn: true
+    }
+  },
   components: {
     'v-footer': Footer
   }
@@ -25,9 +39,54 @@ export default {
     display: -webkit-box
     height :4rem
     line-height :4rem
-  }
-  .header *{
-    display :block
+    display: -webkit-flex /* Safari */
+    display: flex
+    flex-direction: row
+    background-color :#bf360c
+    .item{
+      flex-grow: 1
+      color :#fff
+      a{
+        color :#fff
+      }
+    }
+    .left{
+      padding-left :10px
+    }
+    .center{
+      font-size :0
+      text-align :center
+      button{
+        list-style :none
+        border :none
+        font-size :1.2rem
+        height :2rem
+        line-height :2rem
+        margin-top :1rem
+        background-color :#bf360c
+        color :#fff
+        padding :0 10px
+        outline :none
+      }
+      .left-btn{
+        border :1px solid #fff
+        border-top-left-radius :5px
+        border-bottom-left-radius :5px
+      }
+      .right-btn{
+        border :1px solid #fff
+        border-top-right-radius :5px
+        border-bottom-right-radius :5px
+      }
+      .active-btn{
+        background-color :#fff
+        color :#000
+      }
+    }
+    .right{
+      text-align :right
+      padding-right :10px
+    }
   }
   .content{
     position:relative
@@ -36,7 +95,6 @@ export default {
     flex:1
     overflow:auto
     -webkit-overflow-scrolling:touch
-    background-color:#ccc
   }
 }
 </style>
