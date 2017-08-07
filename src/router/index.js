@@ -11,6 +11,12 @@ import Search from '../pages/search'
 
 import Booklist from '../pages/book-list'
 
+import Bookdetails from '../pages/book-details'
+
+import SimilarRecommend from '../pages/similar-recommend'
+
+import Book from '../pages/book'
+
 Vue.use(Router)
 
 export default new Router({
@@ -44,10 +50,25 @@ export default new Router({
       name: 'Search',
       component: Search
     },
-    { // 书列表
+    { // 书单列表
       path: '/book-list',
       name: 'Booklist',
       component: Booklist
+    },
+    { // 书本介绍详情
+      path: '/book-details',
+      name: 'Bookdetails',
+      component: Bookdetails
+    },
+    { // 同类推荐
+      path: '/similar-recommend',
+      name: 'SimilarRecommend',
+      component: SimilarRecommend
+    },
+    { // 书
+      path: '/book',
+      name: 'Book',
+      component: Book
     }
   ]
 })

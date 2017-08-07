@@ -146,7 +146,7 @@ export default {
         z-index :9
         background-color :#f5f5f5
         .item{
-          line-height :3rem
+          line-height :4rem
           text-align :center
         }
         .active-l{

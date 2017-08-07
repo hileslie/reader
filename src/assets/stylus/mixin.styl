@@ -12,8 +12,26 @@ border-1px($color)
 
 // flex兼容写法
 r_flex()
-  display: -webkit-box
   display: -moz-box
   display: -ms-flexbox
   display: -webkit-flex
+  display:-webkit-box
   display: flex
+
+// 清除浮动
+clearfloat()
+  zoom:1
+  &:after
+    display:block
+    clear:both
+    content:" "
+    visibility:hidden
+    height:0
+
+// 左侧红色小方块
+red-block()
+  display: inline-block
+  width: 6px
+  height: 14px
+  background-color: #dd2c00
+  vertical-align: middle

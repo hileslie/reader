@@ -62,7 +62,7 @@ export default {
         font-size :1.2rem
         height :2rem
         line-height :2rem
-        margin-top :1rem
+        margin-top :0.7rem
         background-color :#bf360c
         color :#fff
         padding :0 10px
