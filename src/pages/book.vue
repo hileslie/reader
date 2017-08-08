@@ -4,11 +4,11 @@
       <div class="back" v-show="setting">
         <v-return></v-return>
       </div>
-      <div class="name" v-show="!setting">
+      <div class="name" v-show="!setting" :class="{'read-bg-white':isReadBg===1,'read-bg-green':isReadBg===2,'read-bg-light-green':isReadBg===3,'read-bg-brown':isReadBg===4,'read-bg-pink':isReadBg===5,'read-bg-grey':isReadBg===6}">
         <h1 class="title">圣墟</h1>
       </div>
     </header>
-    <section class="content" @click="setting=!setting,fontColor=falses">
+    <section class="content" :style="{fontSize: fontSize + 'px' }" :class="{'read-bg-white':isReadBg===1,'read-bg-green':isReadBg===2,'read-bg-light-green':isReadBg===3,'read-bg-brown':isReadBg===4,'read-bg-pink':isReadBg===5,'read-bg-grey':isReadBg===6}" @click="setting=!setting,fontColor=false">
       <p>第一行</p>
       <p>内容</p>
       <p>内容</p>
@@ -98,28 +98,28 @@
         <div class="color">
           <ul class="list">
             <li class="item">
-              <span class="circle white circle-active"></span>
+              <span class="circle white" :class="{'circle-active':isReadBg===1}" @click="isReadBg=1"></span>
             </li>
             <li class="item">
-              <span class="circle green"></span>
+              <span class="circle green" :class="{'circle-active':isReadBg===2}" @click="isReadBg=2"></span>
             </li>
             <li class="item">
-              <span class="circle light-green"></span>
+              <span class="circle light-green" :class="{'circle-active':isReadBg===3}" @click="isReadBg=3"></span>
             </li>
             <li class="item">
-              <span class="circle brown"></span>
+              <span class="circle brown" :class="{'circle-active':isReadBg===4}" @click="isReadBg=4"></span>
             </li>
             <li class="item">
-              <span class="circle pink"></span>
+              <span class="circle pink" :class="{'circle-active':isReadBg===5}" @click="isReadBg=5"></span>
             </li>
             <li class="item">
-              <span class="circle grey"></span>
+              <span class="circle grey" :class="{'circle-active':isReadBg===6}" @click="isReadBg=6"></span>
             </li>
           </ul>
         </div>
         <div class="font">
-          <a class="item subtract">Aa-</a>
-          <a class="item add">Aa+</a>
+          <a class="item subtract" @click="subtractFontSize">Aa-</a>
+          <a class="item add" @click="addFontSize">Aa+</a>
         </div>
       </div>
       <nav class="nav">
@@ -234,13 +234,33 @@ export default {
     return {
       setting: false,
       directory: false,
-      fontColor: false
+      fontColor: false,
+      isReadBg: 1,
+      fontSize: 14
     }
   },
+  // computed: {
+  //   fontSize () {
+  //     return {
+  //       fontSize: 14
+  //     }
+  //   }
+  // },
   components: {
     'v-return': Return
   },
-  methods: {}
+  methods: {
+    subtractFontSize () {
+      if (this.fontSize > 12) {
+        this.fontSize--
+      } else {
+        return
+      }
+    },
+    addFontSize () {
+      this.fontSize++
+    }
+  }
 }
 </script>
 <style lang="stylus" scoped>
@@ -265,6 +285,9 @@ export default {
       background-color :#000
       padding :0 10px
     }
+    .name{
+      width :100%
+    }
   }
   .content{
     position:relative
@@ -275,6 +298,7 @@ export default {
     -webkit-overflow-scrolling:touch
     padding : 0 10px
     background-color :#fff
+    line-height :1.5
   }
   .footer{
     overflow: hidden
@@ -409,6 +433,30 @@ export default {
         padding : 0 10px
       }
     }
+  }
+  .read-bg-white{
+    background-color :#fff
+    color :#000
+  }
+  .read-bg-green{
+    background-color :#c8e6c9
+    color :#000
+  }
+  .read-bg-light-green{
+    background-color :#dcedc8
+    color :#000
+  }
+  .read-bg-brown{
+    background-color :#d7ccc8
+    color :#000
+  }
+  .read-bg-pink{
+    background-color :#f48fb1
+    color :#000
+  }
+  .read-bg-grey{
+    background-color :#424242
+    color :#000
   }
 }
 </style>

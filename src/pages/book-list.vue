@@ -3,60 +3,35 @@
     <header class="header">
       <div class="top">
         <v-return></v-return>
-        <h2 class="title">玄幻</h2>
+        <h2 class="title" @click="loadMore">玄幻</h2>
       </div>
       <div class="top-nav">
         <div class="top-one">
-          <a>热门</a>
-          <a>新书</a>
-          <a>好评</a>
-          <a>完结</a>
-          <a>包月</a>
+          <a v-for="(x, index) in typeListTop" :key="index" @click="choseOneList(x, index)" :class="{'active':oneType===index}">{{x.name}}</a>
         </div>
         <div class="top-two">
-          <a>全部</a>
-          <a>东方玄幻</a>
-          <a>异界大陆</a>
-          <a>异界争霸</a>
-          <a>远古神话</a>
+          <a v-for="(x, index) in typeList" :key="index" @click="choseTwoList(x, index)" :class="{'active':twoType===index}">{{x}}</a>
         </div>
       </div>
     </header>
-    <section class="content">
+    <section class="content" ref="box">
       <ul>
-        <li class="item">
+        <li class="item" v-for="(x, index) in bookLists" :key="index">
           <router-link to="/book-details" class="item-click">
             <div class="pic">
-              <img class="pic-item" src="http://statics.zhuishushenqi.com/agent/http%3A%2F%2Fimg.1391.com%2Fapi%2Fv1%2Fbookcenter%2Fcover%2F1%2F1228859%2F_1228859_441552.jpg%2F" alt="">
+              <img class="pic-item" :src="'http://statics.zhuishushenqi.com' + x.cover" alt="">
             </div>
             <div class="info">
-              <h2 class="title">圣墟</h2>
+              <h2 class="title">{{x.title}}</h2>
               <p class="intro">
-                母鸡啊母鸡啊母鸡啊母鸡啊母鸡啊母鸡啊母鸡母鸡啊母鸡啊母鸡啊母鸡啊母鸡啊母鸡啊母鸡母鸡啊母鸡啊母鸡啊母鸡啊母鸡啊母鸡啊母鸡母鸡啊母鸡啊母鸡啊母鸡啊母鸡啊母鸡啊母鸡
+                {{x.shortIntro}}
               </p>
               <div class="people">
-                <div class="author">程东</div>
-                <div class="reader">123131231232</div>
+                <div class="author">{{x.author}}</div>
+                <div class="reader">{{x.retentionRatio}}留存 | {{x.latelyFollower}}人气</div>
               </div>
             </div>
           </router-link>
-        </li>
-        <li class="item">
-          <a class="item-click">
-            <div class="pic">
-              <img class="pic-item" src="http://statics.zhuishushenqi.com/agent/http%3A%2F%2Fimg.1391.com%2Fapi%2Fv1%2Fbookcenter%2Fcover%2F1%2F1228859%2F_1228859_441552.jpg%2F" alt="">
-            </div>
-            <div class="info">
-              <h2 class="title">圣墟</h2>
-              <p class="intro">
-                母鸡啊母鸡啊母鸡啊母鸡啊母鸡啊母鸡啊母鸡母鸡啊母鸡啊母鸡啊母鸡啊母鸡啊母鸡啊母鸡母鸡啊母鸡啊母鸡啊母鸡啊母鸡啊母鸡啊母鸡母鸡啊母鸡啊母鸡啊母鸡啊母鸡啊母鸡啊母鸡
-              </p>
-              <div class="people">
-                <div class="author">程东</div>
-                <div class="reader">123131231232</div>
-              </div>
-            </div>
-          </a>
         </li>
       </ul>
     </section>
@@ -64,9 +39,104 @@
 </template>
 <script>
 import Return from '../components/return'
+import api from '../api/api'
+
 export default {
+  data () {
+    return {
+      oneType: 0,
+      twoType: 0,
+      type: 'hot',
+      typeListTop: [
+        {
+          value: 'hot',
+          name: '热门'
+        }, {
+          value: 'new',
+          name: '新书'
+        }, {
+          value: 'reputation',
+          name: '好评'
+        }, {
+          value: 'over',
+          name: '完结'
+        }, {
+          value: 'monthly',
+          name: '包月'
+        }
+      ],
+      minor: '',
+      typeList: [],
+      bookLists: [],
+      start: 0,
+      limit: 20,
+      scroll: 0
+    }
+  },
+  created () {
+    api.getCategoriesType().then(response => {
+      Object.entries(response.data).forEach(([key, value]) => {
+        if (this.$route.query.gender === key) {
+          value.forEach(value => {
+            if (value.major === this.$route.query.major) {
+              value.mins.unshift('全部')
+              this.typeList = value.mins
+            }
+          })
+        }
+      })
+    }).catch(err => {
+      console.log(err)
+    })
+
+    this.getBookLists(this.$route.query.gender, this.type, this.$route.query.major, this.minor, this.start, this.limit)
+  },
   components: {
     'v-return': Return
+  },
+  mounted () {
+    // this.$refs.box.addEventListener('scroll', this.menu)
+  },
+  methods: {
+    // 小说列表
+    getBookLists (gender, type, major, minor, start, limit) {
+      api.getTypeBookList(
+        {
+          gender: gender,
+          type: type,
+          major: major,
+          minor: minor,
+          start: start,
+          limit: limit
+        }
+      ).then(response => {
+        this.bookLists = response.data.books
+      }).catch(err => {
+        console.log(err)
+      })
+    },
+    choseOneList (x, index) {
+      this.type = x.value
+      this.oneType = index
+      this.getBookLists(this.$route.query.gender, this.type, this.$route.query.major, this.minor, this.start, this.limit)
+    },
+    choseTwoList (x, index) {
+      this.minor = x === '全部' ? '' : x
+      this.twoType = index
+      this.getBookLists(this.$route.query.gender, this.type, this.$route.query.major, this.minor, this.start, this.limit)
+    },
+    loadMore () {
+      // this.$refs.box.scrollTop = this.$refs.box.scrollHeight
+      console.log(this.$refs.box.scrollHeight)
+      // console.log(document.body.clientHeight)
+      // console.log(document.body.scrollTop)
+      // console.log(this.$refs.box.offsetHeight)
+      console.log(this.$refs.box.scrollTop)
+    },
+    menu () {
+      this.scroll = this.$refs.box.scrollTop
+      console.log(this.scroll)
+    }
   }
 }
 </script>
@@ -85,6 +155,7 @@ export default {
       .return{
         position :absolute
         z-index :2
+        left :10px
       }
       .title{
         position :absolute
@@ -94,6 +165,8 @@ export default {
         width :100%
         margin :0 auto
         text-align :center
+        font-size :1.4rem
+        color :#fff
       }
     }
     .top-nav{
@@ -104,7 +177,15 @@ export default {
         a{
           display :inline-block
           padding :0 10px
+          color :#000
         }
+        .active{
+          color :#bf360c
+        }
+      }
+      .top-two{
+        width :100%
+        overflow-y :auto
       }
     }
   }
@@ -118,6 +199,7 @@ export default {
     .item{
       padding :10px
       border-bottom :1px solid #ddd
+      box-sizing :border-box
       .item-click{
         display :block
         clearfloat()
