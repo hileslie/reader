@@ -2,38 +2,38 @@
   <section class="book-details">
     <header class="header">
       <v-return></v-return>
-      <h2 class="title">圣墟</h2>
+      <h2 class="title">{{bookInfo.title}}</h2>
     </header>
     <section class="content">
       <div class="top">
         <div class="top-one">
           <div class="pic">
-            <img class="pic-item" src="http://statics.zhuishushenqi.com/agent/http%3A%2F%2Fimg.1391.com%2Fapi%2Fv1%2Fbookcenter%2Fcover%2F1%2F1228859%2F_1228859_441552.jpg%2F" alt="">
+            <img class="pic-item" :src="bookInfo.cover | imgPath" alt="">
           </div>
           <div class="info">
-            <h1 class="title">圣墟</h1>
+            <h1 class="title">{{bookInfo.title}}</h1>
             <p class="author">
-              <span>辰东</span> |
-              <span>东方玄幻</span>
+              <span>{{bookInfo.author}}</span> |
+              <span>{{bookInfo.cat}}</span>
             </p>
             <p class="words">
-              <span>213万字</span> |
-              <span>11小时前更新</span>
+              <span>{{bookInfo.wordCount | BookCount}}字</span> |
+              <span>{{bookInfo.updated}}</span>
             </p>
           </div>
         </div>
         <div class="top-two">
           <div class="item">
             <p>追书人气</p>
-            <p>2313211</p>
+            <p>{{bookInfo.latelyFollower}}</p>
           </div>
           <div class="item">
             <p>读者留存</p>
-            <p>2313211</p>
+            <p>{{bookInfo.retentionRatio}}%</p>
           </div>
           <div class="item">
             <p>日更字数</p>
-            <p>2313211</p>
+            <p>{{bookInfo.serializeWordCount}}</p>
           </div>
         </div>
       </div>
@@ -125,9 +125,23 @@
 </template>
 <script>
 import Return from '../components/return'
+import api from '../api/api'
 export default {
+  data () {
+    return {
+      bookInfo: {}
+    }
+  },
   components: {
     'v-return': Return
+  },
+  created () {
+    api.getBookInfo(this.$route.query._id).then(response => {
+      this.bookInfo = response.data
+      console.log(this.bookInfo)
+    }).catch(err => {
+      console.log(err)
+    })
   }
 }
 </script>

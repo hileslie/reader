@@ -3,7 +3,7 @@
     <header class="header">
       <div class="top">
         <v-return></v-return>
-        <h2 class="title" @click="loadMore">玄幻</h2>
+        <h2 class="title">玄幻</h2>
       </div>
       <div class="top-nav">
         <div class="top-one">
@@ -17,9 +17,9 @@
     <section class="content" ref="box">
       <ul>
         <li class="item" v-for="(x, index) in bookLists" :key="index">
-          <router-link to="/book-details" class="item-click">
+          <router-link :to="{ name: 'Bookdetails', query: {_id: x._id}}" class="item-click">
             <div class="pic">
-              <img class="pic-item" :src="'http://statics.zhuishushenqi.com' + x.cover" alt="">
+              <img class="pic-item" :src="x.cover | imgPath" alt="">
             </div>
             <div class="info">
               <h2 class="title">{{x.title}}</h2>
@@ -28,18 +28,25 @@
               </p>
               <div class="people">
                 <div class="author">{{x.author}}</div>
-                <div class="reader">{{x.retentionRatio}}留存 | {{x.latelyFollower}}人气</div>
+                <div class="reader">{{x.retentionRatio}}%读者留存 | {{x.latelyFollower | BookListCount}}人气</div>
               </div>
             </div>
           </router-link>
         </li>
       </ul>
     </section>
+    <v-loading class="loading" v-show="listLoading"></v-loading>
+    <mu-dialog :open="dialog" title="Hi">
+      没有更多内容啦^_^
+      <mu-flat-button label="确定" slot="actions" primary @click="dialog=false" />
+    </mu-dialog>
   </section>
 </template>
 <script>
 import Return from '../components/return'
+import Loading from '../components/loading'
 import api from '../api/api'
+import { debounce } from '../utils/util'
 
 export default {
   data () {
@@ -70,7 +77,10 @@ export default {
       bookLists: [],
       start: 0,
       limit: 20,
-      scroll: 0
+      scroll: 0,
+      listLoading: true,
+      isEnding: false,
+      dialog: false
     }
   },
   created () {
@@ -89,13 +99,14 @@ export default {
       console.log(err)
     })
 
-    this.getBookLists(this.$route.query.gender, this.type, this.$route.query.major, this.minor, this.start, this.limit)
+    this.getBookLists(this.$route.query.gender, this.type, this.$route.query.major, this.minor, this.start * this.limit, this.limit)
   },
   components: {
-    'v-return': Return
+    'v-return': Return,
+    'v-loading': Loading
   },
   mounted () {
-    // this.$refs.box.addEventListener('scroll', this.menu)
+    this.$refs.box.addEventListener('scroll', debounce(this.menu))
   },
   methods: {
     // 小说列表
@@ -110,7 +121,12 @@ export default {
           limit: limit
         }
       ).then(response => {
-        this.bookLists = response.data.books
+        // console.log(response.data.books)
+        if (response.data.books.length < this.limit) {
+          this.isEnding = true
+        }
+        this.listLoading = false
+        this.bookLists.push(...response.data.books)
       }).catch(err => {
         console.log(err)
       })
@@ -118,24 +134,29 @@ export default {
     choseOneList (x, index) {
       this.type = x.value
       this.oneType = index
-      this.getBookLists(this.$route.query.gender, this.type, this.$route.query.major, this.minor, this.start, this.limit)
+      this.start = 0
+      this.bookLists = []
+      this.isEnding = false
+      this.getBookLists(this.$route.query.gender, this.type, this.$route.query.major, this.minor, this.start * this.limit, this.limit)
     },
     choseTwoList (x, index) {
       this.minor = x === '全部' ? '' : x
       this.twoType = index
-      this.getBookLists(this.$route.query.gender, this.type, this.$route.query.major, this.minor, this.start, this.limit)
-    },
-    loadMore () {
-      // this.$refs.box.scrollTop = this.$refs.box.scrollHeight
-      console.log(this.$refs.box.scrollHeight)
-      // console.log(document.body.clientHeight)
-      // console.log(document.body.scrollTop)
-      // console.log(this.$refs.box.offsetHeight)
-      console.log(this.$refs.box.scrollTop)
+      this.start = 0
+      this.bookLists = []
+      this.isEnding = false
+      this.getBookLists(this.$route.query.gender, this.type, this.$route.query.major, this.minor, this.start * this.limit, this.limit)
     },
     menu () {
-      this.scroll = this.$refs.box.scrollTop
-      console.log(this.scroll)
+      if ((this.$refs.box.scrollHeight - this.$refs.box.scrollTop) === this.$refs.box.offsetHeight) {
+        if (this.isEnding === true) {
+          this.dialog = true
+          return false
+        }
+        this.listLoading = true
+        this.start++
+        this.getBookLists(this.$route.query.gender, this.type, this.$route.query.major, this.minor, this.start * this.limit, this.limit)
+      }
     }
   }
 }
@@ -224,6 +245,7 @@ export default {
             display: -webkit-box
             -webkit-line-clamp: 2
             -webkit-box-orient: vertical
+            text-align :left
           }
           .people{
             clearfloat()
@@ -238,6 +260,12 @@ export default {
         }
       }
     }
+  }
+  .loading{
+    position :fixed
+    top :50%
+    left :50%
+    margin-left :-10px
   }
 }
 </style>

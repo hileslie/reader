@@ -10,6 +10,12 @@ Vue.use(MuseUI)
 
 import '../static/css/reset.css'
 
+import * as filters from './filters/filter.js' // 全局vue filter
+// register global utility filters.
+Object.keys(filters).forEach(key => {
+  Vue.filter(key, filters[key])
+})
+
 Vue.config.productionTip = false
 
 /* eslint-disable no-new */
