@@ -43,7 +43,7 @@
           简介
         </h2>
         <p class="info">
-          自撒娇地啊大家都来卡基督教啊家具店了解到家啊索拉卡多久啊看书来道具卡基督教埃里克 自撒娇地啊大家都来卡基督教啊家具店了解到家啊索拉卡多久啊看书来道具卡基督教埃里克 自撒娇地啊大家都来卡基督教啊家具店了解到家啊索拉卡多久啊看书来道具卡基督教埃里克 自撒娇地啊大家都来卡基督教啊家具店了解到家啊索拉卡多久啊看书来道具卡基督教埃里克
+          {{bookInfo.longIntro}}
         </p>
       </div>
       <div class="label">
@@ -52,7 +52,7 @@
           标签
         </h2>
         <div class="list">
-          <span class="item">玄幻</span>
+          <span class="item" v-for="x in bookInfo.tags" :key="x">{{x}}</span>
         </div>
       </div>
       <div class="hot-book-review">
@@ -61,17 +61,17 @@
           热门书评
         </h2>
         <ul class="list">
-          <li class="item">
+          <li class="item" v-for="(x, index) in bookReview" :key="index">
             <div class="left">
-              <img class="head" src="http://statics.zhuishushenqi.com/avatar/2a/37/2a37cbbf61d3c61313dfd59a147f14e5" alt="">
+              <img class="head" :src="x.author.activityAvatar | imgPath" alt="">
             </div>
             <div class="right">
-              <p class="name">名字</p>
-              <p class="remarks">简评</p>
-              <p class="comments">评价评价评价评价好牛逼撒大声叫东陵大盗大里的评价评价评价评价好牛逼撒大声叫东陵大盗大里的评价评价评价评价好牛逼撒大声叫东陵大盗大里的评价评价评价评价好牛逼撒大声叫东陵大盗大里的评价评价评价评价好牛逼撒大声叫东陵大盗大里的</p>
+              <p class="name">{{x.author.nickname}}</p>
+              <p class="remarks">{{x.title}}</p>
+              <p class="comments">{{x.content}}</p>
               <div class="operation">
-                <div class="left">2017-09-09</div>
-                <div class="right">有用</div>
+                <div class="left">{{x.created}}</div>
+                <div class="right">{{x.helpful.yes}}有用</div>
               </div>
             </div>
           </li>
@@ -84,33 +84,15 @@
             你可能会喜欢
           </div>
           <div class="right">
-            <router-link to="/similar-recommend">更多</router-link>
+            <router-link :to="{ name: 'SimilarRecommend', query: {_id: this.$route.query._id}}">更多</router-link>
           </div>
         </h2>
         <ul class="list">
-          <li class="item">
-            <img class="pic" src="http://statics.zhuishushenqi.com/agent/http%3A%2F%2Fimg.1391.com%2Fapi%2Fv1%2Fbookcenter%2Fcover%2F1%2F1365284%2F_1365284_826093.jpg%2F" alt="">
-            <p class="name">通天仙路</p>
-          </li>
-          <li class="item">
-            <img class="pic" src="http://statics.zhuishushenqi.com/agent/http%3A%2F%2Fimg.1391.com%2Fapi%2Fv1%2Fbookcenter%2Fcover%2F1%2F1365284%2F_1365284_826093.jpg%2F" alt="">
-            <p class="name">通天仙路</p>
-          </li>
-          <li class="item">
-            <img class="pic" src="http://statics.zhuishushenqi.com/agent/http%3A%2F%2Fimg.1391.com%2Fapi%2Fv1%2Fbookcenter%2Fcover%2F1%2F1365284%2F_1365284_826093.jpg%2F" alt="">
-            <p class="name">通天仙路</p>
-          </li>
-          <li class="item">
-            <img class="pic" src="http://statics.zhuishushenqi.com/agent/http%3A%2F%2Fimg.1391.com%2Fapi%2Fv1%2Fbookcenter%2Fcover%2F1%2F1365284%2F_1365284_826093.jpg%2F" alt="">
-            <p class="name">通天仙路</p>
-          </li>
-          <li class="item">
-            <img class="pic" src="http://statics.zhuishushenqi.com/agent/http%3A%2F%2Fimg.1391.com%2Fapi%2Fv1%2Fbookcenter%2Fcover%2F1%2F1365284%2F_1365284_826093.jpg%2F" alt="">
-            <p class="name">通天仙路</p>
-          </li>
-          <li class="item">
-            <img class="pic" src="http://statics.zhuishushenqi.com/agent/http%3A%2F%2Fimg.1391.com%2Fapi%2Fv1%2Fbookcenter%2Fcover%2F1%2F1365284%2F_1365284_826093.jpg%2F" alt="">
-            <p class="name">通天仙路</p>
+          <li class="item" v-for="(x, index) in bookLike" :key="index">
+            <router-link  :to="{ name: 'Bookdetails', query: {_id: x._id}}">
+              <img class="pic" :src="x.cover | imgPath" alt="">
+              <p class="name">{{x.title}}</p>
+            </router-link>
           </li>
         </ul>
       </div>
@@ -129,19 +111,61 @@ import api from '../api/api'
 export default {
   data () {
     return {
-      bookInfo: {}
+      bookInfo: {},
+      bookReview: {},
+      bookLike: {}
     }
   },
   components: {
     'v-return': Return
   },
+  beforeRouteUpdate (to, from, next) {
+    // 在当前路由改变，但是该组件被复用时调用
+    // 举例来说，对于一个带有动态参数的路径 /foo/:id，在 /foo/1 和 /foo/2 之间跳转的时候，
+    // 由于会渲染同样的 Foo 组件，因此组件实例会被复用。而这个钩子就会在这个情况下被调用。
+    // 可以访问组件实例 `this`
+    if (to.path === '/book-details') {
+      next({})
+      this.$router.go(0)
+    }
+  },
   created () {
-    api.getBookInfo(this.$route.query._id).then(response => {
-      this.bookInfo = response.data
-      console.log(this.bookInfo)
-    }).catch(err => {
-      console.log(err)
-    })
+    this.getBookInfo()
+    this.getBookReview()
+    this.getLikeBook()
+  },
+  methods: {
+    // 获取小说基本信息
+    getBookInfo () {
+      api.getBookInfo(this.$route.query._id).then(response => {
+        this.bookInfo = response.data
+      }).catch(err => {
+        console.log(err)
+      })
+    },
+
+    // 获取小说热门评论
+    getBookReview () {
+      api.getBookReview(
+        {
+          book: this.$route.query._id,
+          limit: 5
+        }
+      ).then(response => {
+        this.bookReview = response.data.reviews
+      }).catch(err => {
+        console.log(err)
+      })
+    },
+
+    // 获取你可能喜欢的小说列表
+    getLikeBook () {
+      api.getLikeBook(this.$route.query._id).then(response => {
+        this.bookLike = response.data.books.slice(0, 6)
+      }).catch(err => {
+        console.log(err)
+      })
+    }
   }
 }
 </script>
@@ -249,6 +273,7 @@ export default {
           border :1px solid #ddd
           border-radius :10px
           padding :5px
+          margin: 5px
         }
       }
     }
@@ -279,6 +304,9 @@ export default {
             overflow:hidden
             .name, .remarks, .comments{
               line-height :1.5
+            }
+            .name{
+              color :#ff6d00
             }
             .operation{
               clearfloat()
@@ -325,12 +353,15 @@ export default {
           text-align :center
           box-sizing :border-box
           display :inline-block
-          .pic{
-            width: 66px
-            height :88px
-          }
-          .name{
-            line-height :2
+          a{
+            display :block
+            .pic{
+              width: 66px
+              height :88px
+            }
+            .name{
+              line-height :2
+            }
           }
         }
       }

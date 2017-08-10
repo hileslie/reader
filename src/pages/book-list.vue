@@ -137,6 +137,7 @@ export default {
       this.start = 0
       this.bookLists = []
       this.isEnding = false
+      this.listLoading = true
       this.getBookLists(this.$route.query.gender, this.type, this.$route.query.major, this.minor, this.start * this.limit, this.limit)
     },
     choseTwoList (x, index) {
@@ -145,6 +146,7 @@ export default {
       this.start = 0
       this.bookLists = []
       this.isEnding = false
+      this.listLoading = true
       this.getBookLists(this.$route.query.gender, this.type, this.$route.query.major, this.minor, this.start * this.limit, this.limit)
     },
     menu () {
