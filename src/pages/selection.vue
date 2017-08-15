@@ -11,7 +11,7 @@
       </div>
     </header>
     <section class="content">
-      精选
+      <Swiper></Swiper>
     </section>
     <v-footer></v-footer>
   </section>
@@ -19,6 +19,7 @@
 <script>
 // 组件
 import Footer from '../components/footer'
+import Swiper from '../components/swiper'
 export default {
   data () {
     return {
@@ -26,7 +27,8 @@ export default {
     }
   },
   components: {
-    'v-footer': Footer
+    'v-footer': Footer,
+    'Swiper': Swiper
   }
 }
 </script>

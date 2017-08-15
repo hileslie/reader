@@ -61,5 +61,17 @@ export default {
       method: 'get',
       url: url + '/ranking/gender'
     })
+  },
+
+  // 精选页面
+  // 获取轮播图数据http://api.zhuishushenqi.com/recommendPage/node/spread/575f74f27a4a60dc78a435a3?pl=ios
+  getSwiper () {
+    return fetch({
+      method: 'get',
+      url: url + '/recommendPage/node/spread/575f74f27a4a60dc78a435a3',
+      params: {
+        pl: 'ios'
+      }
+    })
   }
 }

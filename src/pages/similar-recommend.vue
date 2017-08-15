@@ -8,8 +8,15 @@
       <ul class="list">
         <li class="item" v-for="(x, index) in bookLike" :key="index">
           <router-link :to="{ name: 'Bookdetails', query: {_id: x._id}}">
-            <img class="pic" :src="x.cover | imgPath" alt="">
-            <p class="name">{{x.title}}</p>
+            <div class="left">
+              <img class="pic" :src="x.cover | imgPath">
+            </div>
+            <div class="right">
+              <h2 class="name">{{x.title}}</h2>
+              <p>{{x.author}} | {{x.majorCate}}</p>
+              <p class="info">{{x.shortIntro}}</p>
+              <p class="num">{{x.latelyFollower}} 人气 | {{x.retentionRatio}}% 读者留存</p>
+            </div>
           </router-link>
         </li>
       </ul>
@@ -36,7 +43,6 @@ export default {
     getLikeBook () {
       api.getLikeBook(this.$route.query._id).then(response => {
         this.bookLike = response.data.books
-        console.log(this.bookLike)
       }).catch(err => {
         console.log(err)
       })
@@ -79,17 +85,42 @@ export default {
     .list{
       padding :10px 0
       .item{
-        text-align :center
         box-sizing :border-box
-        display :inline-block
+        border-bottom :1px solid #ddd
+        margin-bottom :10px
+        padding-bottom :10px
         a{
           display :block
-          .pic{
-            width: 66px
-            height :88px
+          .left{
+            display :inline-block
+            width :30%
+            text-align :center
+            .pic{
+              width: 66px
+              height :88px
+            }
           }
-          .name{
-            line-height :2
+          .right{
+            display :inline-block
+            width :68.5%
+            vertical-align :top
+            .name{
+              line-height :2
+              font-size :1.4rem
+              color :#000
+            }
+            .info{
+              line-height :2
+              overflow: hidden
+              text-overflow: ellipsis
+              display: -webkit-box
+              -webkit-line-clamp: 1
+              -webkit-box-orient: vertical
+            }
+            .num{
+              color :#333
+              line-height :2
+            }
           }
         }
       }

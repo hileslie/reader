@@ -353,6 +353,7 @@ export default {
           text-align :center
           box-sizing :border-box
           display :inline-block
+          margin-bottom :10px
           a{
             display :block
             .pic{
@@ -360,7 +361,12 @@ export default {
               height :88px
             }
             .name{
-              line-height :2
+              line-height :1.5
+              overflow: hidden
+              text-overflow: ellipsis
+              display: -webkit-box
+              -webkit-line-clamp: 1
+              -webkit-box-orient: vertical
             }
           }
         }
