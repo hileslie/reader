@@ -12,6 +12,15 @@
     </header>
     <section class="content">
       <Swiper></Swiper>
+      <div class="list">
+        <div class="top">
+          <h2 class="title"></h2>
+          <a>更多</a>
+        </div>
+        <ul>
+          <li></li>
+        </ul>
+      </div>
     </section>
     <v-footer></v-footer>
   </section>
@@ -20,6 +29,8 @@
 // 组件
 import Footer from '../components/footer'
 import Swiper from '../components/swiper'
+import api from '../api/api'
+
 export default {
   data () {
     return {
@@ -29,6 +40,24 @@ export default {
   components: {
     'v-footer': Footer,
     'Swiper': Swiper
+  },
+  created () {
+    // 获取精选分类
+    api.getFeatured().then(response => {
+      let male = []
+      let famale = []
+      response.data.data.forEach((value, index) => {
+        if (value.title.indexOf('男生') >= 0) {
+          male.push(response.data.data[index])
+        } else if (value.title.indexOf('女生') >= 0) {
+          famale.push(response.data.data[index])
+        }
+      })
+      console.log(male)
+      console.log(famale)
+    }).catch(err => {
+      console.log(err)
+    })
   }
 }
 </script>

@@ -3,6 +3,7 @@ import fetch from './fetch.js'
 const url = '/api'
 
 export default {
+  // 分类页面
   //  获取所有分类
   getAllCategories () {
     return fetch({
@@ -72,6 +73,22 @@ export default {
       params: {
         pl: 'ios'
       }
+    })
+  },
+
+  // 获取精选页面的分类列表大概http://api.zhuishushenqi.com/recommendPage/nodes/5910018c8094b1e228e5868f
+  getFeatured () {
+    return fetch({
+      method: 'get',
+      url: url + '/recommendPage/nodes/5910018c8094b1e228e5868f'
+    })
+  },
+
+  // 获取精选分类项目列表http://api.zhuishushenqi.com/recommendPage/books/59128334694d1cda365b8985
+  getFeaturedList (_id) {
+    return fetch({
+      method: 'get',
+      url: url + '/recommendPage/books/' + _id
     })
   }
 }
