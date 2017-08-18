@@ -17,6 +17,8 @@ import SimilarRecommend from '../pages/similar-recommend'
 
 import Book from '../pages/book'
 
+import FeaturedList from '../pages/featured-list'
+
 Vue.use(Router)
 
 export default new Router({
@@ -69,6 +71,11 @@ export default new Router({
       path: '/book',
       name: 'Book',
       component: Book
+    },
+    { // 精选页面更多列表
+      path: '/featured-list',
+      name: 'FeaturedList',
+      component: FeaturedList
     }
   ]
 })

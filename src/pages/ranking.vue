@@ -22,7 +22,7 @@
         <aside class="sidebar">
           <ul>
             <li class="item" v-for="(x, index) in sidebarList" :key="index" :class="{'active-l':index===num}" @click="num=index">
-              {{x.name}}{{index}}
+              {{x.shortTitle}}
             </li>
           </ul>
         </aside>
@@ -40,21 +40,14 @@
 </template>
 <script>
 import Footer from '../components/footer'
+import api from '../api/api'
+
 export default {
   data () {
     return {
       isActiveB: true,
-      sidebarList: [
-        {
-          name: '栏目'
-        },
-        {
-          name: '栏目'
-        },
-        {
-          name: '栏目'
-        }
-      ],
+
+      sidebarList: [],
       bookList: [
         {
           name: '书'
@@ -71,6 +64,17 @@ export default {
   },
   components: {
     'v-footer': Footer
+  },
+  created () {
+    this.getRanking()
+  },
+  methods: {
+    getRanking () {
+      api.getAllRanking().then(response => {
+        console.log(response.data)
+        this.sidebarList = response.data.male
+      })
+    }
   }
 }
 </script>
@@ -146,7 +150,7 @@ export default {
         z-index :9
         background-color :#f5f5f5
         .item{
-          line-height :4rem
+          line-height :3
           text-align :center
         }
         .active-l{

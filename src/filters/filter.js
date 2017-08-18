@@ -21,10 +21,12 @@ export function BookCount (val) {
 
 // 图片根路径
 export function imgPath (val) {
-  // if (val.indexOf('http://statics.zhuishushenqi.com') > -1) {
-  //   return val
-  // }
-  if (val !== '') {
+  if (val.indexOf('http://statics.zhuishushenqi.com') > -1) {
+    return val
+  } else {
     return 'http://statics.zhuishushenqi.com' + val
   }
+  // if (val !== '') {
+  //   return 'http://statics.zhuishushenqi.com' + val
+  // }
 }

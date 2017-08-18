@@ -56,14 +56,6 @@ export default {
     })
   },
 
-  //  获取排行榜类型
-  getAllRanking () {
-    return fetch({
-      method: 'get',
-      url: url + '/ranking/gender'
-    })
-  },
-
   // 精选页面
   // 获取轮播图数据http://api.zhuishushenqi.com/recommendPage/node/spread/575f74f27a4a60dc78a435a3?pl=ios
   getSwiper () {
@@ -89,6 +81,23 @@ export default {
     return fetch({
       method: 'get',
       url: url + '/recommendPage/books/' + _id
+    })
+  },
+
+  // 获取精选分类项目更多列表http://api.zhuishushenqi.com/recommendPage/node/books/all/59128334694d1cda365b8985
+  getFeaturedMoreList (_id) {
+    return fetch({
+      method: 'get',
+      url: url + '/recommendPage/node/books/all/' + _id
+    })
+  },
+
+  // 排行榜页面
+  //  获取排行榜类型
+  getAllRanking () {
+    return fetch({
+      method: 'get',
+      url: url + '/ranking/gender'
     })
   }
 }
