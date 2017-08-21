@@ -93,11 +93,46 @@ export default {
   },
 
   // 排行榜页面
-  //  获取排行榜类型
+  // 获取排行榜类型
   getAllRanking () {
     return fetch({
       method: 'get',
       url: url + '/ranking/gender'
+    })
+  },
+
+  // 获取排行榜分类列表http://api.zhuishushenqi.com/ranking/54d42d92321052167dfb75e3
+  getRankingList (_id) {
+    return fetch({
+      method: 'get',
+      url: url + '/ranking/' + _id
+    })
+  },
+
+  // 搜索页面
+  // 关键字http://api.zhuishushenqi.com/book/search-hotwords
+  getHotwords () {
+    return fetch({
+      method: 'get',
+      url: url + '/book/search-hotwords'
+    })
+  },
+
+  // 获取搜索子自动补充/book/auto-complete
+  getText (params) {
+    return fetch({
+      method: 'get',
+      url: url + '/book/auto-complete',
+      params: params
+    })
+  },
+
+  // 获取搜索小说的列表/book/fuzzy-search
+  getSearchList (params) {
+    return fetch({
+      method: 'get',
+      url: url + '/book/fuzzy-search',
+      params: params
     })
   }
 }

@@ -8,31 +8,39 @@
         </div>
       </div>
       <div class="top-nav">
-        <div class="item left" :class="{'active-b':isActiveB}" @click="isActiveB=true">
+        <div class="item left" :class="{'active-b':isActiveB}" @click="changeSex('male')">
           男生
         </div>
         <div class="item center"></div>
-        <div class="item right" :class="{'active-b':!isActiveB}" @click="isActiveB=false">
+        <div class="item right" :class="{'active-b':!isActiveB}" @click="changeSex('female')">
           女生
         </div>
       </div>
     </header>
     <section class="content">
-      <section class="wrap">
-        <aside class="sidebar">
-          <ul>
-            <li class="item" v-for="(x, index) in sidebarList" :key="index" :class="{'active-l':index===num}" @click="num=index">
-              {{x.shortTitle}}
-            </li>
-          </ul>
-        </aside>
-        <section class="main">
-          <ul>
-            <li class="item" v-for="(x, index) in bookList" :key="index">
-              {{x.name}}{{index}}
-            </li>
-          </ul>
-        </section>
+      <aside class="sidebar">
+        <ul>
+          <li class="item" v-for="(x, index) in sidebarList" :key="index" :class="{'active-l':index===num}" @click="changeType(x, index)">
+            {{x.shortTitle}}
+          </li>
+        </ul>
+      </aside>
+      <section class="main">
+        <ul>
+          <li class="item" v-for="(x, index) in bookList" :key="index">
+            <router-link :to="{ name: 'Bookdetails', query: {_id: x._id}}">
+              <div class="left">
+                <img class="pic" :src="x.cover | imgPath" :alt="x.title">
+              </div>
+              <div class="right">
+                <h2 class="title">{{x.title}}</h2>
+                <p class="author">{{x.author}}</p>
+                <p class="info">{{x.shortIntro}}</p>
+                <p class="popularity ">{{x.retentionRatio}}%留存 | {{x.latelyFollower | BookListCount}}人气</p>
+              </div>
+            </router-link>
+          </li>
+        </ul>
       </section>
     </section>
     <v-footer></v-footer>
@@ -46,19 +54,10 @@ export default {
   data () {
     return {
       isActiveB: true,
-
+      male: [],
+      female: [],
       sidebarList: [],
-      bookList: [
-        {
-          name: '书'
-        },
-        {
-          name: '书'
-        },
-        {
-          name: '书'
-        }
-      ],
+      bookList: [],
       num: 0
     }
   },
@@ -69,11 +68,46 @@ export default {
     this.getRanking()
   },
   methods: {
+    // 获取侧边栏
     getRanking () {
       api.getAllRanking().then(response => {
-        console.log(response.data)
-        this.sidebarList = response.data.male
+        this.male = response.data.male
+        this.female = response.data.female
+        this.sidebarList = this.male
+        this.getBookList(this.male[0]._id)
+      }).catch(err => {
+        console.log(err)
       })
+    },
+
+    // 获取右侧书籍列表
+    getBookList (_id) {
+      api.getRankingList(_id).then(response => {
+        this.bookList = response.data.ranking.books
+      }).catch(err => {
+        console.log(err)
+      })
+    },
+
+    // 改变性别
+    changeSex (txt) {
+      if (txt === 'male') {
+        this.num = 0
+        this.getBookList(this.male[0]._id)
+        this.isActiveB = true
+        this.sidebarList = this.male
+      } else if (txt === 'female') {
+        this.num = 0
+        this.getBookList(this.female[0]._id)
+        this.isActiveB = false
+        this.sidebarList = this.female
+      }
+    },
+
+    // 改变侧边栏
+    changeType (x, index) {
+      this.num = index
+      this.getBookList(x._id)
     }
   }
 }
@@ -140,27 +174,67 @@ export default {
     overflow:auto
     -webkit-overflow-scrolling:touch
     z-index :999
-    .wrap{
-      .sidebar{
-        position:fixed
-        left :0
-        bottom :4rem
-        width :20%
-        height :calc(100% - 12rem)
-        z-index :9
-        background-color :#f5f5f5
-        .item{
-          line-height :3
-          text-align :center
-        }
-        .active-l{
-          color :#bf360c
-          background-color :#fff
-        }
+    .sidebar{
+      position :fixed
+      top 96px
+      bottom :48px
+      width :80px
+      overflow-y: scroll
+      background-color :#f5f5f5
+      .item{
+        line-height :3
+        text-align :center
       }
-      .main{
-        padding-left :20%
+      .active-l{
+        color :#bf360c
         background-color :#fff
+      }
+    }
+    .main{
+      margin-left :80px
+      .item{
+        clearfloat()
+        padding :10px
+        border-bottom :1px solid #ddd
+        a{
+          display :block
+          .left{
+            float :left
+            width :30%
+            margin-right :10px
+            .pic{
+              width :66px
+              height :88px
+            }
+          }
+          .right{
+            float :left
+            width :65%
+            .title{
+              font-size :14px
+              line-height :2
+              overflow: hidden
+              text-overflow: ellipsis
+              display: -webkit-box
+              -webkit-line-clamp: 1
+              -webkit-box-orient: vertical
+            }
+            .author{
+              line-height :1.5
+            }
+            .info{
+              line-height :1.5
+              overflow: hidden
+              text-overflow: ellipsis
+              display: -webkit-box
+              -webkit-line-clamp: 1
+              -webkit-box-orient: vertical
+            }
+            .popularity {
+              line-height :2
+            }
+          }
+        }
       }
     }
   }

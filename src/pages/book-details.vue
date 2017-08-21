@@ -375,7 +375,6 @@ export default {
   }
   .footer{
     overflow: hidden
-    border-top :1px solid #ddd
     .nav{
       display:-webkit-box
       height: 4rem
