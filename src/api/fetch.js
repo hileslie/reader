@@ -3,7 +3,7 @@ import axios from 'axios'
 // 全局默认配置
 // axios.defaults.baseURL = 'http://api.zhuishushenqi.com'
 // 代理服务器解决跨域问题
-// axios.defaults.baseURL = 'http://35.189.165.140:3000'
+axios.defaults.baseURL = 'http://35.189.165.140:3000'
 axios.defaults.headers.post['content-Type'] = 'appliction/x-www-form-urlencoded'
 // axios.defaults.timeout = 50000
 

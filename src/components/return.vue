@@ -12,3 +12,11 @@ export default {
   }
 }
 </script>
+<style lang="stylus" scoped>
+.return{
+  a{
+    display :block
+  }
+}
+</style>
+

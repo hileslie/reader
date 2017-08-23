@@ -3,7 +3,14 @@
     <header class="header">
       <v-return></v-return>
       <h2 class="title">{{bookInfo.title}}</h2>
+      <a class="change-source" @click="dialog = true">换源</a>
     </header>
+    <mu-dialog :open="dialog" @close="dialog = false" title="Scrollable Dialog" scrollable>
+      <mu-menu>
+        <mu-menu-item :title="x.name" v-for="(x, index) in sourceList" :key="index" @click="choseSource(x)" />
+      </mu-menu>
+      <mu-flat-button primary label="关闭" @click="dialog = false" slot="actions" />
+    </mu-dialog>
     <section class="content">
       <div class="top">
         <div class="top-one">
@@ -63,7 +70,7 @@
         <ul class="list">
           <li class="item" v-for="(x, index) in bookReview" :key="index">
             <div class="left">
-              <img class="head" :src="x.author.activityAvatar | imgPath" alt="">
+              <img class="head" :src="x.author.avatar | imgPath" alt="">
             </div>
             <div class="right">
               <p class="name">{{x.author.nickname}}</p>
@@ -89,7 +96,7 @@
         </h2>
         <ul class="list">
           <li class="item" v-for="(x, index) in bookLike" :key="index">
-            <router-link  :to="{ name: 'Bookdetails', query: {_id: x._id}}">
+            <router-link :to="{ name: 'Bookdetails', query: {_id: x._id}}">
               <img class="pic" :src="x.cover | imgPath" alt="">
               <p class="name">{{x.title}}</p>
             </router-link>
@@ -100,7 +107,7 @@
     <footer class="footer">
       <nav class="nav">
         <a class="left">+追更新</a>
-        <router-link to="/book" class="right">开始阅读</router-link>
+        <router-link :to="{ name: 'Book', query: {_id: source._id}}" class="right">开始阅读</router-link>
       </nav>
     </footer>
   </section>
@@ -113,7 +120,10 @@ export default {
     return {
       bookInfo: {},
       bookReview: {},
-      bookLike: {}
+      bookLike: {},
+      source: {},
+      dialog: false,
+      sourceList: []
     }
   },
   components: {
@@ -131,6 +141,8 @@ export default {
   },
   created () {
     this.getBookInfo()
+    this._getGenuineSource()
+    this._getMixingSource()
     this.getBookReview()
     this.getLikeBook()
   },
@@ -142,6 +154,30 @@ export default {
       }).catch(err => {
         console.log(err)
       })
+    },
+
+    // 获取小说正版源
+    _getGenuineSource () {
+      api.getGenuineSource(this.$route.query._id).then(response => {
+        this.source = response.data[0]
+      }).catch(err => {
+        console.log(err)
+      })
+    },
+
+    // 获取小说混合源getMixingSource
+    _getMixingSource () {
+      api.getMixingSource(this.$route.query._id).then(response => {
+        this.sourceList = response.data
+      }).catch(err => {
+        console.log(err)
+      })
+    },
+
+    // 选择源
+    choseSource (x) {
+      this.dialog = false
+      this.source = x
     },
 
     // 获取小说热门评论
@@ -183,16 +219,23 @@ export default {
     padding :0 10px
     .return{
       position :absolute
-      z-index :2
+      z-index :5
     }
     .title{
       position :absolute
-      z-index :1
+      z-index :2
       top :0
       left :0
       width :100%
       margin :0 auto
       text-align :center
+      color :#fff
+    }
+    .change-source{
+      position :absolute
+      z-index :2
+      right :10px
+      color :#fff
     }
   }
   .content{

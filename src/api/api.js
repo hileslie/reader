@@ -1,6 +1,7 @@
 import fetch from './fetch.js'
 
-const url = '/api'
+// const url = '/api'
+const url = ''
 
 export default {
   // 分类页面
@@ -133,6 +134,53 @@ export default {
       method: 'get',
       url: url + '/book/fuzzy-search',
       params: params
+    })
+  },
+
+  // 小说页面
+  // 获取小说源http://api.zhuishushenqi.com/atoc?view=summary&book=5816b415b06d1d32157790b1
+  getGenuineSource (book) {
+    return fetch({
+      method: 'get',
+      url: url + '/btoc',
+      params: {
+        view: 'summary',
+        book: book
+      }
+    })
+  },
+
+  // 获取小说源http://api.zhuishushenqi.com/atoc?view=summary&book=5816b415b06d1d32157790b1
+  getMixingSource (book) {
+    return fetch({
+      method: 'get',
+      url: url + '/atoc',
+      params: {
+        view: 'summary',
+        book: book
+      }
+    })
+  },
+
+  // 获取小说章节http://api.zhuishushenqi.com/atoc/568fef99adb27bfb4b3a58dc?view=chapters
+  getChapters (sourceId) {
+    return fetch({
+      method: 'get',
+      url: url + '/atoc/' + sourceId,
+      params: {
+        view: 'chapters'
+      }
+    })
+  },
+
+  // 获取章节内容http://chapterup.zhuishushenqi.com/chapter/http://vip.zhuishushenqi.com/chapter/5817f1161bb2ca566b0a5973?cv=1481275033588
+  getChapterContent (link) {
+    return fetch({
+      method: 'get',
+      url: url + '/getChapter',
+      params: {
+        chapterUrl: link
+      }
     })
   }
 }

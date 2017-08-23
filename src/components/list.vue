@@ -1,5 +1,6 @@
 <template>
   <div class="list">
+    <img class="loading" src="../assets/img/timg.gif" alt="" v-if="loading">
     <ul>
       <li class="item" v-for="(x, index) in bookList" :key="index">
         <router-link :to="{ name: 'Bookdetails', query: {_id: x.book._id}}">
@@ -24,6 +25,7 @@ import api from '../api/api'
 export default {
   data () {
     return {
+      loading: true,
       bookList: []
     }
   },
@@ -38,7 +40,10 @@ export default {
   },
   methods: {
     getData () {
+      this.loading = true
+      this.bookList = []
       api.getFeaturedList(this.typeId).then(response => {
+        this.loading = false
         this.bookList = response.data.data
       }).catch(err => {
         console.log(err)
@@ -50,6 +55,15 @@ export default {
 <style lang="stylus" scoped>
 @import '../assets/stylus/mixin.styl'
 .list{
+  position :relative
+  min-height :66px
+  .loading{
+    position :absolute
+    top :50%
+    left :50%
+    margin-left :-33px
+    margin-top :-33px
+  }
   .item{
     clearfloat()
     border-bottom :1px solid #ddd

@@ -52,6 +52,9 @@ export default {
   methods: {
     // 获取精选分类
     getData (sex) {
+      this.featuredList = []
+      this.male = []
+      this.famale = []
       api.getFeatured().then(response => {
         response.data.data.forEach((value, index) => {
           if (value.title.indexOf('男生') >= 0) {
@@ -115,7 +118,7 @@ export default {
         font-size :1.2rem
         height :2rem
         line-height :2rem
-        margin-top :0.7rem
+        margin-top :1rem
         background-color :#bf360c
         color :#fff
         padding :0 10px

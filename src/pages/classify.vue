@@ -119,7 +119,7 @@ export default {
       position :absolute
       top :30%
       left :50%
-      margin-left :-64px
+      margin-left :-33px
     }
     .main{
       .title{

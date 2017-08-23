@@ -26,6 +26,7 @@
         </ul>
       </aside>
       <section class="main">
+        <img class="loading" src="../assets/img/timg.gif" alt="" v-if="loading">
         <ul>
           <li class="item" v-for="(x, index) in bookList" :key="index">
             <router-link :to="{ name: 'Bookdetails', query: {_id: x._id}}">
@@ -53,6 +54,7 @@ import api from '../api/api'
 export default {
   data () {
     return {
+      loading: true,
       isActiveB: true,
       male: [],
       female: [],
@@ -82,8 +84,11 @@ export default {
 
     // 获取右侧书籍列表
     getBookList (_id) {
+      this.bookList = []
+      this.loading = true
       api.getRankingList(_id).then(response => {
         this.bookList = response.data.ranking.books
+        this.loading = false
       }).catch(err => {
         console.log(err)
       })
@@ -176,7 +181,7 @@ export default {
     z-index :999
     .sidebar{
       position :fixed
-      top 96px
+      top :96px
       bottom :48px
       width :80px
       overflow-y: scroll
@@ -192,6 +197,13 @@ export default {
     }
     .main{
       margin-left :80px
+      position :relative
+      .loading{
+        position :absolute
+        top :150px
+        left :50%
+        margin-left :-33px
+      }
       .item{
         clearfloat()
         padding :10px
@@ -211,7 +223,8 @@ export default {
             float :left
             width :65%
             .title{
-              font-size :14px
+              font-size :1.4rem
+              color :#000
               line-height :2
               overflow: hidden
               text-overflow: ellipsis

@@ -35,7 +35,7 @@
         </li>
       </ul>
     </section>
-    <v-loading class="loading" v-show="listLoading"></v-loading>
+    <img class="loading" src="../assets/img/timg.gif" alt="" v-if="loading">
     <mu-dialog :open="dialog" title="Hi">
       没有更多内容啦^_^
       <mu-flat-button label="确定" slot="actions" primary @click="dialog=false" />
@@ -44,7 +44,6 @@
 </template>
 <script>
 import Return from '../components/return'
-import Loading from '../components/loading'
 import api from '../api/api'
 import { debounce } from '../utils/util'
 
@@ -78,7 +77,7 @@ export default {
       start: 0,
       limit: 20,
       scroll: 0,
-      listLoading: true,
+      loading: true,
       isEnding: false,
       dialog: false
     }
@@ -102,8 +101,7 @@ export default {
     this.getBookLists(this.$route.query.gender, this.type, this.$route.query.major, this.minor, this.start * this.limit, this.limit)
   },
   components: {
-    'v-return': Return,
-    'v-loading': Loading
+    'v-return': Return
   },
   mounted () {
     this.$refs.box.addEventListener('scroll', debounce(this.menu))
@@ -125,7 +123,7 @@ export default {
         if (response.data.books.length < this.limit) {
           this.isEnding = true
         }
-        this.listLoading = false
+        this.loading = false
         this.bookLists.push(...response.data.books)
       }).catch(err => {
         console.log(err)
@@ -137,7 +135,7 @@ export default {
       this.start = 0
       this.bookLists = []
       this.isEnding = false
-      this.listLoading = true
+      this.loading = true
       this.getBookLists(this.$route.query.gender, this.type, this.$route.query.major, this.minor, this.start * this.limit, this.limit)
     },
     choseTwoList (x, index) {
@@ -146,7 +144,7 @@ export default {
       this.start = 0
       this.bookLists = []
       this.isEnding = false
-      this.listLoading = true
+      this.loading = true
       this.getBookLists(this.$route.query.gender, this.type, this.$route.query.major, this.minor, this.start * this.limit, this.limit)
     },
     menu () {
@@ -155,7 +153,7 @@ export default {
           this.dialog = true
           return false
         }
-        this.listLoading = true
+        this.loading = true
         this.start++
         this.getBookLists(this.$route.query.gender, this.type, this.$route.query.major, this.minor, this.start * this.limit, this.limit)
       }
@@ -267,7 +265,8 @@ export default {
     position :fixed
     top :50%
     left :50%
-    margin-left :-10px
+    margin-left :-33px
+    margin-top :-33px
   }
 }
 </style>

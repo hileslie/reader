@@ -29,6 +29,7 @@
       </section>
       <!-- 小说列表 -->
       <section class="search-books">
+        <img class="loading" src="../assets/img/timg.gif" alt="" v-if="loading">
         <ul>
           <li class="item" v-for="(x, index) in bookList" :key="index">
             <router-link :to="{ name: 'Bookdetails', query: {_id: x._id}}">
@@ -58,7 +59,8 @@ export default {
       searchText: '',
       TextList: [],
       textPrompt: false,
-      bookList: []
+      bookList: [],
+      loading: false
     }
   },
   components: {
@@ -102,6 +104,7 @@ export default {
           query: query
         }
       ).then(response => {
+        this.loading = false
         this.bookList = response.data.books
       })
     },
@@ -109,6 +112,7 @@ export default {
     // 搜索小说列表
     search (x) {
       this.textPrompt = false
+      this.loading = true
       this.getBooks(x)
     }
   }
@@ -129,10 +133,13 @@ export default {
       position :relative
       width :85%
       .search-input{
+        position :absolute
+        left :12px
+        top :50%
+        margin-top :-12px
         width :100%
-        height :36px
-        line-height :36px
-        margin :6px
+        height :24px
+        line-height :24px
         border-radius :10px
         padding :0 36px 0 10px
         outline-style: none
@@ -191,6 +198,14 @@ export default {
       }
     }
     .search-books{
+      position :relative
+      .loading{
+        position :absolute
+        left :50%
+        top :50%
+        margin-left :-33px
+        margin-top :-33px
+      }
       .item{
         clearfloat()
         padding :10px

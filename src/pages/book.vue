@@ -1,97 +1,22 @@
 <template>
   <section class="book">
-    <header class="header">
-      <div class="back" v-show="setting">
+    <header class="header" v-show="setting">
+      <div class="back">
         <v-return></v-return>
       </div>
-      <div class="name" v-show="!setting" :class="{'read-bg-white':isReadBg===1,'read-bg-green':isReadBg===2,'read-bg-light-green':isReadBg===3,'read-bg-brown':isReadBg===4,'read-bg-pink':isReadBg===5,'read-bg-grey':isReadBg===6}">
+      <!-- <div class="name" v-show="!setting" :class="{'read-bg-white':isReadBg===1,'read-bg-green':isReadBg===2,'read-bg-light-green':isReadBg===3,'read-bg-brown':isReadBg===4,'read-bg-pink':isReadBg===5,'read-bg-grey':isReadBg===6}">
         <h1 class="title">圣墟</h1>
-      </div>
+      </div> -->
     </header>
-    <section class="content" :style="{fontSize: fontSize + 'px' }" :class="{'read-bg-white':isReadBg===1,'read-bg-green':isReadBg===2,'read-bg-light-green':isReadBg===3,'read-bg-brown':isReadBg===4,'read-bg-pink':isReadBg===5,'read-bg-grey':isReadBg===6}" @click="setting=!setting,fontColor=false">
-      <p>第一行</p>
-      <p>内容</p>
-      <p>内容</p>
-      <p>内容</p>
-      <p>内容</p>
-      <p>内容</p>
-      <p>内容</p>
-      <p>内容</p>
-      <p>内容</p>
-      <p>内容</p>
-      <p>内容</p>
-      <p>内容</p>
-      <p>内容</p>
-      <p>内容</p>
-      <p>内容</p>
-      <p>内容</p>
-      <p>内容</p>
-      <p>内容</p>
-      <p>内容</p>
-      <p>内容</p>
-      <p>内容</p>
-      <p>内容</p>
-      <p>内容</p>
-      <p>内容</p>
-      <p>内容</p>
-      <p>内容</p>
-      <p>内容</p>
-      <p>内容</p>
-      <p>内容</p>
-      <p>内容</p>
-      <p>内容</p>
-      <p>内容</p>
-      <p>内容</p>
-      <p>内容</p>
-      <p>内容</p>
-      <p>内容</p>
-      <p>内容</p>
-      <p>内容</p>
-      <p>内容</p>
-      <p>内容</p>
-      <p>内容</p>
-      <p>内容</p>
-      <p>内容</p>
-      <p>内容</p>
-      <p>内容</p>
-      <p>内容</p>
-      <p>内容</p>
-      <p>内容</p>
-      <p>内容</p>
-      <p>内容</p>
-      <p>内容</p>
-      <p>内容</p>
-      <p>内容</p>
-      <p>内容</p>
-
-      <p>内容</p>
-      <p>内容</p>
-      <p>内容</p>
-      <p>内容</p>
-      <p>内容</p>
-      <p>内容</p>
-      <p>内容</p>
-      <p>内容</p>
-      <p>内容</p>
-      <p>内容</p>
-      <p>内容</p>
-      <p>内容</p>
-      <p>内容</p>
-      <p>内容</p>
-      <p>内容</p>
-      <p>内容</p>
-      <p>内容</p>
-      <p>内容</p>
-      <p>内容</p>
-      <p>内容</p>
-      <p>内容</p>
-      <p>内容</p>
-      <p>内容</p>
-      <p>内容</p>
-      <p>内容</p>
-      <p>内容</p>
-      <p>最后一行</p>
-
+    <section class="content" :style="{fontSize: fontSize + 'px' }" :class="{'read-bg-white':isReadBg===1,'read-bg-green':isReadBg===2,'read-bg-light-green':isReadBg===3,'read-bg-brown':isReadBg===4,'read-bg-pink':isReadBg===5,'read-bg-grey':isReadBg===6}">
+      <h2 class="title">{{articleContent.title}}</h2>
+      <p class="article" @click="setting=!setting,fontColor=false" v-if="articleContent.cpContent">{{articleContent.cpContent}}</p>
+      <p class="article" @click="setting=!setting,fontColor=false" v-if="!articleContent.cpContent">{{articleContent.body}}</p>
+      <img class="loading" src="../assets/img/timg.gif" alt="" v-if="loading">
+      <div class="btn" v-show="!loading">
+        <a class="left" v-if="num>0" @click="last">上一章</a>
+        <a class="right" v-if="num>=0" @click="next">下一章</a>
+      </div>
     </section>
     <footer class="footer" v-show="setting">
       <div class="font-color" v-show="fontColor">
@@ -139,89 +64,11 @@
           <a class="sorting">倒序</a>
         </header>
         <section class="directory-content">
-          <p>第一行</p>
-          <p>内容</p>
-          <p>内容</p>
-          <p>内容</p>
-          <p>内容</p>
-          <p>内容</p>
-          <p>内容</p>
-          <p>内容</p>
-          <p>内容</p>
-          <p>内容</p>
-          <p>内容</p>
-          <p>内容</p>
-          <p>内容</p>
-          <p>内容</p>
-          <p>内容</p>
-          <p>内容</p>
-          <p>内容</p>
-          <p>内容</p>
-          <p>内容</p>
-          <p>内容</p>
-          <p>内容</p>
-          <p>内容</p>
-          <p>内容</p>
-          <p>内容</p>
-          <p>内容</p>
-          <p>内容</p>
-          <p>内容</p>
-          <p>内容</p>
-          <p>内容</p>
-          <p>内容</p>
-          <p>内容</p>
-          <p>内容</p>
-          <p>内容</p>
-          <p>内容</p>
-          <p>内容</p>
-          <p>内容</p>
-          <p>内容</p>
-          <p>内容</p>
-          <p>内容</p>
-          <p>内容</p>
-          <p>内容</p>
-          <p>内容</p>
-          <p>内容</p>
-          <p>内容</p>
-          <p>内容</p>
-          <p>内容</p>
-          <p>内容</p>
-          <p>内容</p>
-          <p>内容</p>
-          <p>内容</p>
-          <p>内容</p>
-          <p>内容</p>
-          <p>内容</p>
-          <p>内容</p>
-
-          <p>内容</p>
-          <p>内容</p>
-          <p>内容</p>
-          <p>内容</p>
-          <p>内容</p>
-          <p>内容</p>
-          <p>内容</p>
-          <p>内容</p>
-          <p>内容</p>
-          <p>内容</p>
-          <p>内容</p>
-          <p>内容</p>
-          <p>内容</p>
-          <p>内容</p>
-          <p>内容</p>
-          <p>内容</p>
-          <p>内容</p>
-          <p>内容</p>
-          <p>内容</p>
-          <p>内容</p>
-          <p>内容</p>
-          <p>内容</p>
-          <p>内容</p>
-          <p>内容</p>
-          <p>内容</p>
-          <p>内容</p>
-          <p>最后一行</p>
-
+          <ul>
+            <li class="item" v-for="(x, index) in chapterList" :key="index" @click="chooseChapter(x)">
+              {{x.title}}
+            </li>
+          </ul>
         </section>
       </div>
     </div>
@@ -229,6 +76,7 @@
 </template>
 <script>
 import Return from '../components/return'
+import api from '../api/api'
 export default {
   data () {
     return {
@@ -236,18 +84,18 @@ export default {
       directory: false,
       fontColor: false,
       isReadBg: 1,
-      fontSize: 14
+      fontSize: 14,
+      chapterList: [],
+      articleContent: {},
+      loading: true,
+      num: 0
     }
   },
-  // computed: {
-  //   fontSize () {
-  //     return {
-  //       fontSize: 14
-  //     }
-  //   }
-  // },
   components: {
     'v-return': Return
+  },
+  created () {
+    this._getChapters()
   },
   methods: {
     subtractFontSize () {
@@ -259,6 +107,52 @@ export default {
     },
     addFontSize () {
       this.fontSize++
+    },
+
+    // 获取小说章节
+    _getChapters () {
+      api.getChapters(this.$route.query._id).then(response => {
+        this.chapterList = response.data.chapters
+        this._getChapterContent(this.chapterList[0].link)
+      }).catch(err => {
+        console.log(err)
+      })
+    },
+
+    // 获取小说章节内容
+    _getChapterContent (link) {
+      this.articleContent = {}
+      this.loading = true
+      api.getChapterContent(link).then(response => {
+        this.loading = false
+        this.articleContent = response.data.chapter
+        console.log(this.articleContent)
+      }).catch(err => {
+        console.log(err)
+      })
+    },
+
+    // 选择章节
+    chooseChapter (x) {
+      this.directory = false
+      this.setting = false
+      this._getChapterContent(x.link)
+    },
+
+    // 上一章
+    last () {
+      if (this.num > 0) {
+        this.num--
+        this._getChapterContent(this.chapterList[this.num].link)
+      }
+    },
+
+    // 下一章
+    next () {
+      if (this.num < (this.chapterList.length - 1)) {
+        this.num++
+        this._getChapterContent(this.chapterList[this.num].link)
+      }
     }
   }
 }
@@ -275,9 +169,10 @@ export default {
     display: -webkit-flex /* Safari */
     display: flex
     flex-direction: row
+    width :100%
     .title{
       width :100%
-      font-size: 1.4rem
+      font-size: 1.6rem
       padding :0 10px
     }
     .back{
@@ -299,6 +194,33 @@ export default {
     padding : 0 10px
     background-color :#fff
     line-height :1.5
+    .loading{
+      position :absolute
+      top :50%
+      left :50%
+      margin-left :-33px
+      margin-top :-33px
+    }
+    .title{
+      font-size :1.5rem
+      padding: 5px
+      text-align: center
+    }
+    .article{
+      line-height :2
+    }
+    .btn{
+      height :30px
+      line-height :30px
+      .left{
+        display :block
+        float :left
+      }
+      .right{
+        display :block
+        float :right
+      }
+    }
   }
   .footer{
     overflow: hidden
@@ -431,6 +353,9 @@ export default {
         overflow:auto
         -webkit-overflow-scrolling:touch
         padding : 0 10px
+        .item{
+          padding: 10px 0
+        }
       }
     }
   }
