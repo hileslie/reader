@@ -16,3 +16,7 @@ export const debounce = (fn, delay, timeout) => {
   }
 }
 
+export function setFontSize () {
+
+}
+

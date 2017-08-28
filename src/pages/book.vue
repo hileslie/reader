@@ -77,6 +77,7 @@
 <script>
 import Return from '../components/return'
 import api from '../api/api'
+import { mapGetters } from 'vuex'
 export default {
   data () {
     return {
@@ -84,29 +85,40 @@ export default {
       directory: false,
       fontColor: false,
       isReadBg: 1,
-      fontSize: 14,
+      fontSize: this.getFontSize,
       chapterList: [],
       articleContent: {},
       loading: true,
       num: 0
     }
   },
+  computed: {
+    // 使用对象展开运算符将 getters 混入 computed 对象中
+    ...mapGetters([
+      'getFontSize'
+    ])
+  },
   components: {
     'v-return': Return
   },
   created () {
     this._getChapters()
+    if (!this.fontSize) {
+      this.fontSize = 14
+    }
   },
   methods: {
     subtractFontSize () {
       if (this.fontSize > 12) {
         this.fontSize--
+        this.$store.dispatch('changeFontSize', this.fontSize)
       } else {
         return
       }
     },
     addFontSize () {
       this.fontSize++
+      this.$store.dispatch('changeFontSize', this.fontSize)
     },
 
     // 获取小说章节
